@@ -15,21 +15,26 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Step 1 - Install ClawHub skill
-        run: npx clawhub@latest install verified-agent-identity
+      # ClawHub removed because CLI is broken
+      # - name: Step 1 - Install ClawHub skill
+      #   run: npx clawdhub@latest install agent-wallet
 
       - name: Install script dependencies
-        run: cd scripts; npm install
+        run: |
+          cd scripts
+          npm install
 
       - name: Step 2 - Create new Ethereum Identity
         run: node scripts/createNewEthereumIdentity.js
